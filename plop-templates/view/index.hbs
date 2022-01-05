@@ -1,0 +1,89 @@
+{{#if template}}
+<template>
+  <div>
+    <PcSearchForm
+      :form-list="formList"
+      :search-form="searchForm"
+      :action-list="actionList"
+      @request="requestTable('reset')"
+    />
+    <PcTable
+      ref="table"
+      :req-params="searchForm"
+      :request-api="getList"
+      :colum-list="columList"
+    >
+      <template
+        v-slot:action="{row}"
+      >
+        <el-button type="primary" @click="edit(row)">
+          编辑
+        </el-button>
+        <el-button @click="check(row)">
+          查看
+        </el-button>
+      </template>
+    </PcTable>
+    <AddEdit
+      :mode="addEditObj.mode"
+      :data="addEditObj.data"
+      :visible.sync="addEditObj.visible"
+      @submit="requestTable"
+    />
+  </div>
+</template>
+{{/if}}
+
+{{#if script}}
+<script>
+import { getList } from '@/api/xxx'
+import AddEdit from './components/AddEditDialog'
+
+export default {
+  name: '{{ properCase name }}',
+  components: { AddEdit },
+  data() {
+    return {
+      getList,
+      addEditObj: {
+        data: {},
+        visible: false,
+        mode: 'add'
+      },
+      searchForm: {
+        name: ''
+      },
+      formList: [
+        { label: '模板', prop: 'name' }
+      ],
+      actionList: [
+        { label: '新增', click: () => { this.add() } }
+      ],
+      columList: [
+        { label: '测试1', prop: 'test', minWidth: 120 }
+      ]
+    }
+  },
+  methods: {
+    edit (data) {
+      this.addEditObj.data = data
+      this.addEditObj.visible = true
+      this.addEditObj.mode = 'edit'
+    },
+    add () {
+      this.addEditObj.visible = true
+      this.addEditObj.mode = 'add'
+    },
+    requestTable (type) {
+      this.$refs.table && this.$refs.table.requestData(type)
+    }
+  }
+}
+</script>
+{{/if}}
+
+{{#if style}}
+<style lang="scss" scoped>
+
+</style>
+{{/if}}

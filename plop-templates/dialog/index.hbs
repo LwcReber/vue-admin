@@ -1,0 +1,55 @@
+{{#if template}}
+<template>
+  <el-dialog
+    top="20vh"
+    width="600px"
+    :title="dialogTitle[mode]"
+    :visible="visible"
+    @close="close"
+  >
+    <el-form ref="form" class="form" :disabled="disabled" :model="form" label-width="120px" :rules="rules">
+    </el-form>
+    <span v-if="!disabled" slot="footer" class="dialog-footer">
+      <el-button @click="close">取消</el-button>
+      <el-button :loading="btnLoading" type="primary" @click="submitForm">确定</el-button>
+    </span>
+  </el-dialog>
+</template>
+{{/if}}
+
+{{#if script}}
+<script>
+import mixin from '@/mixins/dialog'
+
+export default {
+  name: '{{ properCase name }}',
+  mixins: [mixin],
+  data() {
+    return {
+      dialogTitle: { add: '新增', edit: '编辑' },
+      form: {
+
+      },
+      rules: {
+
+      }
+    }
+  },
+  methods: {
+    setFormData () {
+      // set form data
+    },
+    // 提交form data
+    async handleSubmit () {
+
+    }
+  }
+}
+</script>
+{{/if}}
+
+{{#if style}}
+<style lang="scss" scoped>
+
+</style>
+{{/if}}
