@@ -72,7 +72,7 @@ sources: select 类型的下拉数据，必须是[{ label: 'xxx', value: 'xxx' }
         test: '', test2: ''
       },
       formList: [
-        { label: 'Label1', prop: 'test1' }
+        { label: 'Label1', prop: 'test' }
         { label: 'testLabel', prop: 'test2' }
       ]
     }
