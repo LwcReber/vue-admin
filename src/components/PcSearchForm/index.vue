@@ -5,54 +5,55 @@
     :model="searchForm"
     label-suffix=":"
   >
-    <el-form-item
-      v-for="item in formList"
-      v-if="item.permission ? checkPermission(item.permission) : true"
-      :key="item.prop"
-      :prop="item.prop"
-      :label="item.label"
-    >
-      <slot :row="item">
-        <template>
-          <el-Input
-            v-if="item.type ? item.type === 'input' : 'input'"
-            v-model="searchForm[item.prop]"
-            :type="item.itype"
-            :maxlength="item.maxlength"
-            :size="item.size || 'mini'"
-            :clearable="item.hasOwnProperty('clearable') ? item.clearable : true"
-            :placeholder="item.placeholder || `请输入${item.label}` "
-            :style="{width: calcWidth(item.width) || '160px' }"
-          />
-          <el-select
-            v-else-if="item.type === 'select'"
-            v-model="searchForm[item.prop]"
-            :size="item.size || 'mini'"
-            :clearable="item.clearable"
-            :placeholder="item.placeholder"
-            :style="{width: calcWidth(item.width) || '160px' }"
-          >
-            <el-option
-              v-for="sitem in item.sources"
-              :key="sitem.value"
-              :label="sitem.label"
-              :value="sitem.value"
+    <template v-for="item in formList">
+      <el-form-item
+        v-if="item.permission ? checkPermission(item.permission) : true"
+        :key="item.prop"
+        :prop="item.prop"
+        :label="item.label"
+      >
+        <slot :name="item.prop" :row="item">
+          <template>
+            <el-Input
+              v-if="item.type ? item.type === 'input' : 'input'"
+              v-model="searchForm[item.prop]"
+              :type="item.itype"
+              :maxlength="item.maxlength"
+              :size="item.size || 'mini'"
+              :clearable="item.hasOwnProperty('clearable') ? item.clearable : true"
+              :placeholder="item.placeholder || `请输入${item.label}` "
+              :style="{width: calcWidth(item.width) || '160px' }"
             />
-          </el-select>
+            <el-select
+              v-else-if="item.type === 'select'"
+              v-model="searchForm[item.prop]"
+              :size="item.size || 'mini'"
+              :clearable="item.clearable"
+              :placeholder="item.placeholder"
+              :style="{width: calcWidth(item.width) || '160px' }"
+            >
+              <el-option
+                v-for="sitem in item.sources"
+                :key="sitem.value"
+                :label="sitem.label"
+                :value="sitem.value"
+              />
+            </el-select>
 
-          <el-date-picker
-            v-else-if="item.type === 'date'"
-            v-model="searchForm[item.prop]"
-            :style="{width: item.width ? calcWidth(item.width) : item.itype === 'daterange' ? '280px' : '360px'}"
-            :size="item.size || 'mini'"
-            :type="item.itype || 'daterange'"
-            range-separator="至"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-          />
-        </template>
-      </slot>
-    </el-form-item>
+            <el-date-picker
+              v-else-if="item.type === 'date'"
+              v-model="searchForm[item.prop]"
+              :style="{width: item.width ? calcWidth(item.width) : item.itype === 'daterange' ? '280px' : '360px'}"
+              :size="item.size || 'mini'"
+              :type="item.itype || 'daterange'"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+            />
+          </template>
+        </slot>
+      </el-form-item>
+    </template>
 
     <el-form-item>
       <el-button
@@ -69,16 +70,17 @@
       >
         重置
       </el-button>
-      <el-button
-        v-for="item in actionList"
-        v-if="item.permission ? checkPermission(item.permission) : item.epermission ?  checkBtnPermission(item.epermission) : true"
-        :key="item.label"
-        size="mini"
-        :type="item.type || 'primary'"
-        @click="item.click"
-      >
-        {{ item.label }}
-      </el-button>
+      <template v-for="item in actionList">
+        <el-button
+          v-if="item.permission ? checkPermission(item.permission) : item.epermission ? checkBtnPermission(item.epermission) : true"
+          :key="item.label"
+          size="mini"
+          :type="item.type || 'primary'"
+          @click="item.click"
+        >
+          {{ item.label }}
+        </el-button>
+      </template>
     </el-form-item>
     <slot name="after"></slot>
   </el-form>
@@ -86,7 +88,7 @@
 
 <script>
 import { DatePicker } from 'element-ui'
-import checkPermission, {checkBtnPermission} from '@/utils/permission'
+import checkPermission, { checkBtnPermission } from '@/utils/permission'
 
 export default {
   name: 'PcSearchForm',
@@ -122,7 +124,7 @@ export default {
     reset () {
       // 重置表单
       this.$refs.searchForm.resetFields()
-       this.$emit('request')
+      this.$emit('request')
     }
   }
 }

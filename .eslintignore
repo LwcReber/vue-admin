@@ -3,5 +3,3 @@ src/assets
 public
 dist
 mock
-src/components/PcTable/index.vue
-src/components/PcSearchForm/index.vue

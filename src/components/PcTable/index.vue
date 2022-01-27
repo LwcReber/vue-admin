@@ -1,8 +1,8 @@
 <template>
   <div>
     <el-table
-      v-bind="$attrs"
       v-loading="loading"
+      v-bind="$attrs"
       :data="tableList"
       :size="tableSize"
       border
@@ -29,49 +29,10 @@
         align="center"
       />
       <!-- permission 权限控制 -->
-      <el-table-column
-        v-for="item in columList"
-        v-if="item.permission  ? checkPermission(item.permission) : true"
-        :key="item.prop"
-        :label="item.label"
-        :width="item.width"
-        :min-width="item.minWidth"
-        :prop="item.prop"
-        :fixed="item.fixed"
-        :type="item.type"
-        :align="item.align || 'center'"
-        :sortable="item.sortable"
-      >
-        <template
-          slot="header"
-        >
-          <!-- <table-expand
-            v-if="item.renderHeader"
-            :column="item"
-            :render="item.renderHeader"
-          /> -->
-          <slot :name="'header-' + item.prop"></slot>
-        </template>
-        <template slot-scope="scope">
-          <table-expand
-            v-if="item.render"
-            :row="scope.row"
-            :column="item"
-            :render="item.render"
-          />
-          <slot :name="item.prop" v-else :row="scope.row" :column="{...scope.column, prop: item.prop}" :index="scope['$index']">
-            <span>{{ scope.row[item.prop] }}</span>
-          </slot>
-        </template>
-      </el-table-column>
-
-      <!-- 最后一次操作人，操作时间 -->
-      <template v-if="lastModifyColu">
+      <template v-for="item in columList">
         <el-table-column
-          v-for="item in lastModifyList"
-          v-if="item.permission  ? checkPermission(item.permission) : true"
+          v-if="item.permission ? checkPermission(item.permission) : true"
           :key="item.prop"
-          eslint-disable-next-line
           :label="item.label"
           :width="item.width"
           :min-width="item.minWidth"
@@ -79,7 +40,13 @@
           :fixed="item.fixed"
           :type="item.type"
           :align="item.align || 'center'"
+          :sortable="item.sortable"
         >
+          <template
+            slot="header"
+          >
+            <slot :name="'header-' + item.prop"></slot>
+          </template>
           <template slot-scope="scope">
             <table-expand
               v-if="item.render"
@@ -87,11 +54,41 @@
               :column="item"
               :render="item.render"
             />
-            <slot v-else :row="scope.row" :column="{...scope.column, prop: item.prop}" :index="scope['$index']">
+            <slot v-else :name="item.prop" :row="scope.row" :column="{...scope.column, prop: item.prop}" :index="scope['$index']">
               <span>{{ scope.row[item.prop] }}</span>
             </slot>
           </template>
         </el-table-column>
+      </template>
+
+      <!-- 最后一次操作人，操作时间 -->
+      <template v-if="lastModifyColu">
+        <template v-for="item in lastModifyList">
+          <el-table-column
+            v-if="item.permission ? checkPermission(item.permission) : true"
+            :key="item.prop"
+            eslint-disable-next-line
+            :label="item.label"
+            :width="item.width"
+            :min-width="item.minWidth"
+            :prop="item.prop"
+            :fixed="item.fixed"
+            :type="item.type"
+            :align="item.align || 'center'"
+          >
+            <template slot-scope="scope">
+              <table-expand
+                v-if="item.render"
+                :row="scope.row"
+                :column="item"
+                :render="item.render"
+              />
+              <slot v-else :row="scope.row" :column="{...scope.column, prop: item.prop}" :index="scope['$index']">
+                <span>{{ scope.row[item.prop] }}</span>
+              </slot>
+            </template>
+          </el-table-column>
+        </template>
       </template>
 
       <!-- 操作按钮区写法自定义 -->

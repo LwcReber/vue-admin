@@ -39,12 +39,12 @@ sources: select 类型的下拉数据，必须是[{ label: 'xxx', value: 'xxx' }
 
 如：
 
-```
+``` js
  formList: [
- 		{ label: '名称', prop: 'name' },
- 		{ label: '编号', prop: 'code', width: '200px' },
- 		{ label: '类型', prop: 'type', sources: typeStatusAll, type: 'select' },
- 		{ label: '模式', prop: 'mode', sources: modesList, type: 'select' }
+  { label: '名称', prop: 'name' },
+  { label: '编号', prop: 'code', width: '200px' },
+  { label: '类型', prop: 'type', sources: typeStatusAll, type: 'select' },
+  { label: '模式', prop: 'mode', sources: modesList, type: 'select' }
  ]
 ```
 
@@ -57,26 +57,28 @@ sources: select 类型的下拉数据，必须是[{ label: 'xxx', value: 'xxx' }
    :action-list="actionList"
    @request="requestTable('reset')"
  >
-    <template v-slot:test="{row}">
-	  <!-- row 是tabled的每一条数据 -->
+    <template v-slot:test>
       <el-input v-model="searchForm.test"></el-input>
     </template>
-    <template v-slot:test2="{row}">
-       <el-input v-model="searchForm.test2"></el-input>
+    <template v-slot:test2>
+      <el-input v-model="searchForm.test2"></el-input>
     </template>
  </PcSearchForm>
 
-data () {
-	return {
-		searchForm: {
-       prop1: '', test: ''
-    },
-		formList: [
-			{ label: 'Label1', prop: 'prop1' }
-			{ label: 'testLabel', prop: 'test' }
-		]
-	}
-}
+<script>
+  data () {
+    return {
+      searchForm: {
+        test: '', test2: ''
+      },
+      formList: [
+        { label: 'Label1', prop: 'test1' }
+        { label: 'testLabel', prop: 'test2' }
+      ]
+    }
+  }
+</script>
+
 ```
 
 search-form： 搜索form表单的mode，保存所有项的值
